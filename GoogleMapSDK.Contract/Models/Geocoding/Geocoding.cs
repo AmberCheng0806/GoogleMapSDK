@@ -4,19 +4,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GoogleMapSDK.API.Geocoding.Models
+namespace GoogleMapSDK.Contract.Models.Geocoding
 {
-    public class GeocodingByPlaceId
+    public class Geocoding
     {
-        public string place { get; set; }
-        public string placeId { get; set; }
-        public Location location { get; set; }
-        public string granularity { get; set; }
-        public Viewport viewport { get; set; }
-        public string formattedAddress { get; set; }
-        public Postaladdress postalAddress { get; set; }
-        public Addresscomponent[] addressComponents { get; set; }
-        public string[] types { get; set; }
+        public Result[] results { get; set; }
+
+
+        public class Result
+        {
+            public string place { get; set; }
+            public string placeId { get; set; }
+            public Location location { get; set; }
+            public string granularity { get; set; }
+            public Viewport viewport { get; set; }
+            public string formattedAddress { get; set; }
+            public Postaladdress postalAddress { get; set; }
+            public Addresscomponent[] addressComponents { get; set; }
+            public string[] types { get; set; }
+            public Pluscode plusCode { get; set; }
+        }
 
         public class Location
         {
@@ -50,6 +57,12 @@ namespace GoogleMapSDK.API.Geocoding.Models
             public string administrativeArea { get; set; }
             public string locality { get; set; }
             public string[] addressLines { get; set; }
+        }
+
+        public class Pluscode
+        {
+            public string globalCode { get; set; }
+            public string compoundCode { get; set; }
         }
 
         public class Addresscomponent

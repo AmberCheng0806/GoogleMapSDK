@@ -1,28 +1,36 @@
 ﻿using GoogleMapSDK.API.Util;
+using GoogleMapSDK.Contract.Models.Route;
 using HTTP_Utility;
 using Newtonsoft.Json;
+using GoogleMapSDK.Contract.Contracts.API;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using HTTP_Utility.Interfaces;
 
 namespace GoogleMapSDK.API.Route
 {
-    public class RouteContext
+    public class RouteContext : IRouteContext
     {
-        private HTTP_Utility.HttpUtility HttpUtility;
+        private IHttpRequest httpUtility;
+        public IHttpRequest HttpUtility { get => httpUtility; }
         private JsonSerializerSettings settings = new JsonSerializerSettings();
-        public RouteContext(HTTP_Utility.HttpUtility httpUtility)
+        public RouteContext(IHttpRequest httpUtility)
         {
-            HttpUtility = httpUtility;
-            HttpUtility.BaseUrl = "https://routes.googleapis.com/";
-            HttpUtility.AddHeaders("X-Goog-FieldMask", "routes.distanceMeters,routes.duration,routes.legs.steps.distanceMeters,routes.legs.steps.staticDuration,routes.legs.steps.navigationInstruction,routes.legs.steps.transitDetails,routes.routeLabels,routes.legs.steps.polyline.encodedPolyline,routes.polyline.encodedPolyline");
+            httpUtility = httpUtility;
             settings.Converters.Add(new GooglePolylineConverter());
         }
-        public async Task<Route.Models.Routes> ComputeRoutesBylatLng(Route.Models.RouteRequestByLatLng routeRequestByLatLng)
+        private void SharedSetting()
         {
+            HttpUtility.BaseUrl = "https://routes.googleapis.com/";
+            HttpUtility.AddHeaders("X-Goog-FieldMask", "routes.distanceMeters,routes.duration,routes.legs.steps.distanceMeters,routes.legs.steps.staticDuration,routes.legs.steps.navigationInstruction,routes.legs.steps.transitDetails,routes.routeLabels,routes.legs.steps.polyline.encodedPolyline,routes.polyline.encodedPolyline");
+        }
+        public async Task<Routes> ComputeRoutesBylatLng(RouteRequestByLatLng routeRequestByLatLng)
+        {
+            SharedSetting();
             var intermediates = routeRequestByLatLng.Intermediates == null ?
                 new object[] { } : routeRequestByLatLng.Intermediates.Select(x => new
                 {
@@ -36,7 +44,7 @@ namespace GoogleMapSDK.API.Route
                     }
                 }).ToArray();
 
-            return await HttpUtility.PostAsync<Route.Models.Routes>("directions/v2:computeRoutes", new
+            return await HttpUtility.PostAsync<Routes>("directions/v2:computeRoutes", new
             {
                 origin = new
                 {
@@ -75,15 +83,16 @@ namespace GoogleMapSDK.API.Route
             );
         }
 
-        public async Task<Route.Models.Routes> ComputeRoutesByPlaceId(Route.Models.RouteRequestByPlaceIdOrAddress routeRequestByPlaceId)
+        public async Task<Routes> ComputeRoutesByPlaceId(RouteRequestByPlaceIdOrAddress routeRequestByPlaceId)
         {
+            SharedSetting();
             var intermediates = routeRequestByPlaceId.Intermediates == null ?
                 new object[] { } : routeRequestByPlaceId.Intermediates.Select(x => new
                 {
                     placeId = x
                 }).ToArray();
 
-            return await HttpUtility.PostAsync<Route.Models.Routes>("directions/v2:computeRoutes", new
+            return await HttpUtility.PostAsync<Routes>("directions/v2:computeRoutes", new
             {
                 origin = new
                 {
@@ -108,15 +117,16 @@ namespace GoogleMapSDK.API.Route
             );
         }
 
-        public async Task<Route.Models.Routes> ComputeRoutesByAddress(Route.Models.RouteRequestByPlaceIdOrAddress routeRequestByAddress)
+        public async Task<Routes> ComputeRoutesByAddress(RouteRequestByPlaceIdOrAddress routeRequestByAddress)
         {
+            SharedSetting();
             var intermediates = routeRequestByAddress.Intermediates == null ?
                 new object[] { } : routeRequestByAddress.Intermediates.Select(x => new
                 {
                     address = x
                 }).ToArray();
 
-            return await HttpUtility.PostAsync<Route.Models.Routes>("directions/v2:computeRoutes", new
+            return await HttpUtility.PostAsync<Routes>("directions/v2:computeRoutes", new
             {
                 origin = new
                 {

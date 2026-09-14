@@ -11,7 +11,13 @@
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.10" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="10.0.10" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.10" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\GoogleMapSDK.Contract\GoogleMapSDK.Contract.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -21,9 +27,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Update="appSettings.json">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </None>
+		<None Update="appSettings.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 
 </Project>

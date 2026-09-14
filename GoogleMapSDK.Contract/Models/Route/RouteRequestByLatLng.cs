@@ -1,11 +1,11 @@
-﻿using System;
+﻿using GoogleMapSDK.Contract.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static GoogleMapSDK.API.Route.Models.Routes;
 
-namespace GoogleMapSDK.API.Route.Models
+namespace GoogleMapSDK.Contract.Models.Route
 {
     public class RouteRequestByLatLng
     {
@@ -13,13 +13,13 @@ namespace GoogleMapSDK.API.Route.Models
         public double OriginLng { get; set; }
         public double DestinationLat { get; set; }
         public double DestinationLng { get; set; }
-        public List<LatLng> Intermediates { get; set; }
-        public string travelMode { get; set; }
+        public List<LatLng> Intermediates { get; set; } = null;
+        public TravelModeEnum travelMode { get; set; }
         public bool AvoidTolls { get; set; }
         public bool AvoidHighways { get; set; }
         public bool AvoidFerries { get; set; }
 
-        public RouteRequestByLatLng(double originLat, double originLng, double destinationLat, double destinationLng, List<LatLng> intermediates, string travelMode, bool avoidTolls, bool avoidHighways, bool avoidFerries)
+        public RouteRequestByLatLng(double originLat, double originLng, double destinationLat, double destinationLng, List<LatLng> intermediates = null, TravelModeEnum travelMode = TravelModeEnum.DRIVE, bool avoidTolls = false, bool avoidHighways = false, bool avoidFerries = false)
         {
             OriginLat = originLat;
             OriginLng = originLng;

@@ -1,12 +1,11 @@
-﻿using GoogleMapSDK.API.Util;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GoogleMapSDK.API.Route.Models
+namespace GoogleMapSDK.Contract.Models.Route
 {
     public class Routes
     {

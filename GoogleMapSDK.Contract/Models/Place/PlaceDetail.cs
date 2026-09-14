@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GoogleMapSDK.API.Place.Models
+namespace GoogleMapSDK.Contract.Models.Place
 {
     public class PlaceDetail
     {
@@ -14,6 +14,7 @@ namespace GoogleMapSDK.API.Place.Models
         public float rating { get; set; }
         public Regularopeninghours regularOpeningHours { get; set; }
         public Displayname displayName { get; set; }
+        public Review[] reviews { get; set; }
         public Photo[] photos { get; set; }
 
         public class Location
@@ -56,14 +57,29 @@ namespace GoogleMapSDK.API.Place.Models
             public string languageCode { get; set; }
         }
 
-        public class Photo
+        public class Review
         {
             public string name { get; set; }
-            public int widthPx { get; set; }
-            public int heightPx { get; set; }
-            public Authorattribution[] authorAttributions { get; set; }
+            public string relativePublishTimeDescription { get; set; }
+            public int rating { get; set; }
+            public Text text { get; set; }
+            public Originaltext originalText { get; set; }
+            public Authorattribution authorAttribution { get; set; }
+            public string publishTime { get; set; }
             public string flagContentUri { get; set; }
             public string googleMapsUri { get; set; }
+        }
+
+        public class Text
+        {
+            public string text { get; set; }
+            public string languageCode { get; set; }
+        }
+
+        public class Originaltext
+        {
+            public string text { get; set; }
+            public string languageCode { get; set; }
         }
 
         public class Authorattribution
@@ -72,6 +88,24 @@ namespace GoogleMapSDK.API.Place.Models
             public string uri { get; set; }
             public string photoUri { get; set; }
         }
+
+        public class Photo
+        {
+            public string name { get; set; }
+            public int widthPx { get; set; }
+            public int heightPx { get; set; }
+            public Authorattribution1[] authorAttributions { get; set; }
+            public string flagContentUri { get; set; }
+            public string googleMapsUri { get; set; }
+        }
+
+        public class Authorattribution1
+        {
+            public string displayName { get; set; }
+            public string uri { get; set; }
+            public string photoUri { get; set; }
+        }
+
 
     }
 }

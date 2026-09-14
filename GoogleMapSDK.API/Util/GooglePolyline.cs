@@ -1,4 +1,4 @@
-﻿using GoogleMapSDK.API.Route.Models;
+﻿using GoogleMapSDK.Contract.Models.Route;
 using System;
 using System.Collections.Generic;
 using System.Linq;

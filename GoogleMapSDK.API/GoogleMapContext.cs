@@ -1,7 +1,12 @@
 ﻿using GoogleMapSDK.API.Geocoding;
 using GoogleMapSDK.API.Place;
 using GoogleMapSDK.API.Route;
+using GoogleMapSDK.Contract.Contracts.API;
+using GoogleMapSDK.Contract.Options;
 using HTTP_Utility;
+using HTTP_Utility.Interfaces;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,24 +16,26 @@ using System.Web;
 
 namespace GoogleMapSDK.API
 {
-    public class GoogleMapContext
+    public class GoogleMapContext : IGoogleMapAPIContext
     {
-        public GeocodingContext GeocodingContext { get; set; }
-        public PlaceContext PlaceContext { get; set; }
-        public RouteContext RouteContext { get; set; }
-        private HTTP_Utility.HttpUtility HttpUtility { get; set; }
-        private Interceptor interceptor = new Interceptor();
-
-        public GoogleMapContext(string key)
+        public IGeocodingContext GeocodingContext { get; }
+        public IPlaceContext PlaceContext { get; }
+        public IRouteContext RouteContext { get; }
+        private IHttpRequest HttpUtility;
+        private IBaseInterceptor Interceptor;
+        public GoogleMapContext(IGeocodingContext geocodingContext, IPlaceContext placeContext, IRouteContext routeContext, IBaseInterceptor interceptor, IHttpRequest httpUtility, IOptions<KeyOptions> options)
         {
+            string key = options.Value.Key;
             interceptor.RequestHandler = request =>
             {
                 request.Headers.Add("X-Goog-Api-Key", key);
             };
-            HttpUtility = new HTTP_Utility.HttpUtility(false, interceptor);
-            GeocodingContext = new GeocodingContext(HttpUtility);
-            PlaceContext = new PlaceContext(HttpUtility);
-            RouteContext = new RouteContext(HttpUtility);
+            httpUtility.SetInterceptor(interceptor);
+            HttpUtility = httpUtility;
+            Interceptor = interceptor;
+            GeocodingContext = geocodingContext;
+            PlaceContext = placeContext;
+            RouteContext = routeContext;
         }
     }
 }

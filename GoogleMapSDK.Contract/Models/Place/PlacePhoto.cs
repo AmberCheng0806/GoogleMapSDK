@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GoogleMapSDK.API.Place.Models
+namespace GoogleMapSDK.Contract.Models.Place
 {
     public class PlacePhoto
     {
