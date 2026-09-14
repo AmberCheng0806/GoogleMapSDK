@@ -19,7 +19,6 @@ namespace GoogleMapSDK.API
     {
         public static IServiceCollection AddGoogleMapAPIService(this IServiceCollection services, IConfiguration configuration)
         {
-            string apiKey = configuration["X-Goog-Api-Key"];
             services.Configure<KeyOptions>(configuration.GetSection("GoogleMap"));
             services.AddSingleton<IGeocodingContext, GeocodingContext>();
             services.AddSingleton<IPlaceContext, PlaceContext>();
