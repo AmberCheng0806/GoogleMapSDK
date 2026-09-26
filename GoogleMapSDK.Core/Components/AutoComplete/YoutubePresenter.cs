@@ -21,6 +21,7 @@ namespace GoogleMapSDK.Core.Components.AutoComplete
         public async Task<IEnumerable<Video>> GetSearchResults(string inputText)
         {
             var search = await YoutubeContext.Search.GetAllAsync(inputText, 0, default);
+            if (search.items.Count() == 0) return null;
             return search.items.Select(x => new Video(x.snippet.title, x.id.videoId)).ToList();
         }
     }

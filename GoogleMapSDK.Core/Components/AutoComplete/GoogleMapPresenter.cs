@@ -20,6 +20,7 @@ namespace GoogleMapSDK.Core.Components.AutoComplete
         public async Task<IEnumerable<Place>> GetSearchResults(string inputText)
         {
             var autoComplete = await GoogleMapContext.PlaceContext.AutoCompleteAsync(inputText);
+            if (autoComplete.suggestions == null) return null;
             var list = autoComplete.suggestions.Select(async x =>
             {
                 var searchText = await GoogleMapContext.PlaceContext.SearchTextAsync(x.placePrediction.text.text);
