@@ -1,7 +1,10 @@
 ﻿using GoogleMapSDK.Contract.Contracts.API;
+using GoogleMapSDK.Contract.Contracts.Presenter;
 using GoogleMapSDK.Contract.Models.AutoComplete;
 using GoogleMapSDK.Contract.Options;
 using GoogleMapSDK.Core.Components.AutoComplete;
+using GoogleMapSDK.Core.Components.Carousel;
+using GoogleMapSDK.Core.Components.Reviews;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -21,6 +24,8 @@ namespace GoogleMapSDK.Core
         {
             services.AddSingleton<IAutoCompletePresenter<Place>, GoogleMapPresenter>();
             services.AddSingleton<IAutoCompletePresenter<Video>, YoutubePresenter>();
+            services.AddSingleton<ICarousePresenter, CarouselPresenter>();
+            services.AddSingleton<IReviewsPresenter, ReviewsPresenter>();
             services.AddSingleton<IYoutubeContext, YoutubeContext>();
             return services;
         }
