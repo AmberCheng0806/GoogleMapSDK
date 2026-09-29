@@ -18,6 +18,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Reference Include="AutoMapper">
+		  <HintPath>..\..\AutoMapper\AutoMapper\bin\Debug\AutoMapper.dll</HintPath>
+		</Reference>
 		<Reference Include="IoC-Container">
 			<HintPath>D:\家\C#\WinForm專案\IoC-Container\IoC-Container\bin\Debug\IoC-Container.dll</HintPath>
 		</Reference>
