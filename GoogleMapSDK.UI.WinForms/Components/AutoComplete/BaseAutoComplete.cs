@@ -1,4 +1,4 @@
-﻿using GoogleMapSDK.Contract.Contracts.API;
+﻿using GoogleMapSDK.Contract.Contracts.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
