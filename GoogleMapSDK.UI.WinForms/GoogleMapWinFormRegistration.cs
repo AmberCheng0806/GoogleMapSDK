@@ -1,7 +1,10 @@
 ﻿using GoogleMapSDK.Contract.Contracts.API;
+using GoogleMapSDK.Contract.Contracts.Components;
 using GoogleMapSDK.Contract.Models.AutoComplete;
 using GoogleMapSDK.Contract.Options;
 using GoogleMapSDK.UI.WinForms.Components.AutoComplete;
+using GoogleMapSDK.UI.WinForms.Components.Carousel;
+using GoogleMapSDK.UI.WinForms.Components.Reviews;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -20,7 +23,9 @@ namespace GoogleMapSDK.UI.WinForms
         {
             services.AddSingleton<BaseAutoComplete<Place>, GoogleMapAutoCompleteTextBox>();
             services.AddSingleton<BaseAutoComplete<Video>, YoutubeAutoCompleteTextBox>();
-
+            services.AddSingleton<BaseCarousel, Carousel>();
+            services.AddSingleton<BaseReviews, Reviews>();
+            services.AddSingleton<BaseReview, Review>();
             return services;
         }
     }
