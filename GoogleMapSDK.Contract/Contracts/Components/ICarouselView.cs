@@ -12,5 +12,6 @@ namespace GoogleMapSDK.Contract.Contracts.Components
         int Index { get; set; }
         void PreviousBtn_Click(object sender, EventArgs e);
         void NextBtn_Click(object sender, EventArgs e);
+        Task GetImages(string placeId);
     }
 }
