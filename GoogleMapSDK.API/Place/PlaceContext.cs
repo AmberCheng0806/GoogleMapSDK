@@ -19,7 +19,7 @@ namespace GoogleMapSDK.API.Place
         {
             HttpUtility.BaseUrl = "https://places.googleapis.com/v1/places/";
             HttpUtility.AddHeaders("X-Goog-FieldMask", "displayName,formattedAddress,location,rating,nationalPhoneNumber,regularOpeningHours,photos,reviews");
-            return await HttpUtility.GetAsync<PlaceDetail>(placeId);
+            return await HttpUtility.GetAsync<PlaceDetail>(placeId, new Dictionary<string, string>() { { "languageCode", "zh-TW" } });
         }
         public async Task<Places> SearchTextAsync(string text)
         {
