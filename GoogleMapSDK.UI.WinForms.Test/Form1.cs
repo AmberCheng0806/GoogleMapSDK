@@ -14,15 +14,11 @@ namespace GoogleMapSDK.UI.WinForms.Test
 {
     public partial class Form1 : Form
     {
-        private BaseAutoComplete<Place> Origin;
-        private BaseAutoComplete<Video> VideoTest;
         private BaseCarousel Carousel;
         private BaseReviews Reviews;
         public Form1(BaseAutoComplete<Place> origin, BaseAutoComplete<Video> videoTest, BaseCarousel carousel, BaseReviews reviews)
         {
             InitializeComponent();
-            Origin = origin;
-            VideoTest = videoTest;
             Carousel = carousel;
             Reviews = reviews;
             FlowLayoutPanel flowLayoutPanel = new FlowLayoutPanel();
