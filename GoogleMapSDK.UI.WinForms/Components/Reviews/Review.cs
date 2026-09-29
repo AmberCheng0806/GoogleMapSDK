@@ -12,7 +12,6 @@ namespace GoogleMapSDK.UI.WinForms.Components.Reviews
 {
     public partial class Review : BaseReview
     {
-        //private string authorName;
         public override string AuthorName
         {
             get
@@ -25,7 +24,6 @@ namespace GoogleMapSDK.UI.WinForms.Components.Reviews
                 AuthorNameLab.Text = authorName;
             }
         }
-        //private string authorImg;
         public override string AuthorImg
         {
             get
@@ -41,7 +39,6 @@ namespace GoogleMapSDK.UI.WinForms.Components.Reviews
                 }
             }
         }
-        //private int rating;
         public override int Rating
         {
             get
@@ -55,7 +52,6 @@ namespace GoogleMapSDK.UI.WinForms.Components.Reviews
                 RenderStars(rating);
             }
         }
-        //private string reviewText;
         public override string ReviewText
         {
             get
@@ -68,7 +64,6 @@ namespace GoogleMapSDK.UI.WinForms.Components.Reviews
                 ReviewTextLab.Text = reviewText;
             }
         }
-        //private string publishTime;
         public override string PublishTime
         {
             get
@@ -82,14 +77,6 @@ namespace GoogleMapSDK.UI.WinForms.Components.Reviews
             }
         }
 
-        //public Review(string authorName, string authorImg, int rating, string reviewText, string time) : this()
-        //{
-        //    AuthorName = authorName;
-        //    AuthorImg = authorImg;
-        //    Rating = rating;
-        //    ReviewText = reviewText;
-        //    PublishTime = time;
-        //}
         public Review() { InitializeComponent(); }
         private void RenderStars(int number)
         {
