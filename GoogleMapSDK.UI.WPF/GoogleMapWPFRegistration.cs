@@ -1,5 +1,7 @@
 ﻿using GoogleMapSDK.Contract.Models.AutoComplete;
 using GoogleMapSDK.UI.WPF.Components.AutoComplete;
+using GoogleMapSDK.UI.WPF.Components.Carousel;
+using GoogleMapSDK.UI.WPF.Components.Review;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -16,7 +18,9 @@ namespace GoogleMapSDK.UI.WPF
         {
             services.AddSingleton<BaseAutoComplete<Place>, GoogleMapAutoCompleteTextBox>();
             services.AddSingleton<BaseAutoComplete<Video>, YoutubeAutoCompleteTextBox>();
-
+            services.AddSingleton<BaseCarousel, Carousel>();
+            services.AddSingleton<BaseReviews, Reviews>();
+            services.AddSingleton<BaseReview, Review>();
             return services;
         }
     }
