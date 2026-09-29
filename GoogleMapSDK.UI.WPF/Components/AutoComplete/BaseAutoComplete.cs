@@ -1,4 +1,4 @@
-﻿using GoogleMapSDK.Contract.Contracts.API;
+﻿using GoogleMapSDK.Contract.Contracts.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,29 +18,12 @@ namespace GoogleMapSDK.UI.WPF.Components.AutoComplete
 
         public BaseAutoComplete()
         {
-            //AutoComplete.TextChanged += AutoCompleteTextBox_TextChanged;
-            AutoComplete.KeyDown += AutoComplete_KeyDown;
+            AutoComplete.TextChanged += AutoCompleteTextBox_TextChanged;
             ResultListBox.SelectionChanged += ListBox_MouseClick;
         }
         public async void AutoCompleteTextBox_TextChanged(object sender, EventArgs e)
         {
             if (this.IsSelected) return;
-            if (string.IsNullOrEmpty(AutoComplete.Text))
-            {
-                IsDropDownVisible = System.Windows.Visibility.Collapsed;
-                return;
-            }
-            var result = await GetSearchResults(AutoComplete.Text);
-            ResultListBox.ItemsSource = result;
-            ResultListBox.DisplayMemberPath = DisplayMember;
-            ResultListBox.SelectedValuePath = ValueMember;
-            IsDropDownVisible = System.Windows.Visibility.Visible;
-        }
-
-        private async void AutoComplete_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key != Key.Enter) return;
-            if (IsSelected) return;
             if (string.IsNullOrEmpty(AutoComplete.Text))
             {
                 IsDropDownVisible = System.Windows.Visibility.Collapsed;
