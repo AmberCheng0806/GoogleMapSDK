@@ -10,5 +10,6 @@ namespace GoogleMapSDK.Contract.Contracts.Components
     {
         double Rating { get; set; }
         List<IReviewView> ReviewsList { get; set; }
+        Task GetReviews(string placeId);
     }
 }
