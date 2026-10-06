@@ -1,6 +1,7 @@
 ﻿using GoogleMapSDK.Contract.Contracts.Presenter;
 using IoC_Container.Factory;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -21,25 +22,24 @@ namespace GoogleMapSDK.UI.WPF.Components.Carousel
     /// <summary>
     /// Carousel.xaml 的互動邏輯
     /// </summary>
-    public partial class Carousel : BaseCarousel
+    public partial class Carousel : UserControl
     {
-        private ICarousePresenter CarousePresenter;
-        public Carousel(IPresenterFactory presenterFactory)
+        private CarouselContext context;
+        public Carousel(CarouselContext carouselContext)
         {
             InitializeComponent();
-            Image = CarouselImage;
-            PreviousBtn = PreviousButton;
-            NextBtn = NextButton;
-            PreviousBtn.IsEnabled = false;
-            PreviousBtn.Click += PreviousBtn_Click;
-            NextBtn.Click += NextBtn_Click;
-            CarousePresenter = presenterFactory.Create<ICarousePresenter>(this);
+            context = carouselContext;
+            DataContext = carouselContext;
         }
-
-        public async override Task GetImages(string placeId)
+        private string placeId;
+        public string PlaceId
         {
-            var result = await CarousePresenter.GetImages(placeId);
-            Images = result;
+            get => placeId;
+            set
+            {
+                placeId = value;
+                context.GetImages(placeId);
+            }
         }
     }
 }

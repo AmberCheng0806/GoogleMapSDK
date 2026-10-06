@@ -18,9 +18,10 @@ namespace GoogleMapSDK.UI.WPF
         {
             services.AddSingleton<BaseAutoComplete<Place>, GoogleMapAutoCompleteTextBox>();
             services.AddSingleton<BaseAutoComplete<Video>, YoutubeAutoCompleteTextBox>();
-            services.AddSingleton<BaseCarousel, Carousel>();
+            services.AddSingleton<Carousel, Carousel>();
             services.AddSingleton<BaseReviews, Reviews>();
             services.AddSingleton<BaseReview, Review>();
+            services.AddSingleton<CarouselContext, CarouselContext>();
             return services;
         }
     }
