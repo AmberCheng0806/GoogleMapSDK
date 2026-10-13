@@ -24,66 +24,25 @@ namespace GoogleMapSDK.UI.WPF.Components.Review
     /// <summary>
     /// Reviews.xaml 的互動邏輯
     /// </summary>
-    public partial class Reviews : BaseReviews
+    public partial class Reviews : UserControl
     {
-        private IReviewsPresenter ReviewsPresenter;
-        public override double Rating
-        {
-            get => rating;
-            set
-            {
-                rating = value;
-                RatingText.Text = Math.Round(value, 1).ToString();
-                RenderStars(value);
-            }
-        }
-
-        public override List<IReviewView> ReviewsList
-        {
-            get => reviewsList;
-            set
-            {
-                reviewsList = value;
-                RenderReviews();
-            }
-        }
-
-        public Reviews(IPresenterFactory presenterFactory)
+        private ReviewsContext context;
+        public Reviews(ReviewsContext reviewsContext)
         {
             InitializeComponent();
-            ReviewsPresenter = presenterFactory.Create<IReviewsPresenter>(this);
+            context = reviewsContext;
+            DataContext = context;
         }
 
-        private void RenderStars(double number)
+        private string placeId;
+        public string PlaceId
         {
-            if (ReviewsList.Count == 0) return;
-            StarText.Text = "";
-            int num = (int)Math.Round(number);
-            for (int i = 0; i < num; i++)
+            get => placeId;
+            set
             {
-                StarText.Text += "★";
+                placeId = value;
+                context.GetReviews(placeId);
             }
-            int rest = 5 - num;
-            for (int i = 0; i < rest; i++)
-            {
-                StarText.Text += "☆";
-            }
-        }
-
-        private void RenderReviews()
-        {
-            ReviewsPanel.Children.Clear();
-            foreach (IReviewView review in ReviewsList)
-            {
-                ReviewsPanel.Children.Add((Control)review);
-            }
-        }
-
-        public async override Task GetReviews(string placeId)
-        {
-            var reviews = await ReviewsPresenter.GetReviews(placeId);
-            ReviewsList = AutoMapper.AutoMapper.Map<ReviewModel, Review>(reviews.Reviews).Select(x => (IReviewView)x).ToList();
-            Rating = reviews.Rating;
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿<local:BaseReviews
+﻿<UserControl
     x:Class="GoogleMapSDK.UI.WPF.Components.Review.Reviews"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -20,14 +20,21 @@
             Grid.Row="0"
             Margin="0,0,0,10"
             Orientation="Horizontal">
-            <TextBlock x:Name="RatingText" />
-            <TextBlock x:Name="StarText" Margin="10,0,0,0" />
+            <TextBlock Text="{Binding Rating, StringFormat={}{0:F1}}" />
+            <TextBlock Margin="10,0,0,0" Text="{Binding Stars}" />
+
         </StackPanel>
 
         <!--  評論列表  -->
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-            <StackPanel x:Name="ReviewsPanel" />
+            <ItemsControl ItemsSource="{Binding ReviewsList}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <local:Review />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </ScrollViewer>
 
     </Grid>
-</local:BaseReviews>
+</UserControl>

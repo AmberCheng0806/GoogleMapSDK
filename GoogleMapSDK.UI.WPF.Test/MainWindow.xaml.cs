@@ -23,8 +23,8 @@ namespace GoogleMapSDK.UI.WPF.Test
     public partial class MainWindow : Window
     {
         private Carousel Carousel;
-        private BaseReviews Reviews;
-        public MainWindow(BaseAutoComplete<Place> origin, BaseAutoComplete<Video> videoTest, Carousel carousel, BaseReviews reviews)
+        private Reviews Reviews;
+        public MainWindow(BaseAutoComplete<Place> origin, BaseAutoComplete<Video> videoTest, Carousel carousel, Reviews reviews)
         {
             InitializeComponent();
             origin.OnSelectedItem += OnSelectedItem;
@@ -44,7 +44,7 @@ namespace GoogleMapSDK.UI.WPF.Test
         private async void OnSelectedItem(object? sender, Place e)
         {
             string placeId = e.Value;
-            await Reviews.GetReviews(placeId);
+            Reviews.PlaceId = placeId;
             Carousel.PlaceId = placeId;
         }
     }
