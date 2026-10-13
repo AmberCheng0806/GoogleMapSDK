@@ -34,8 +34,11 @@ namespace GoogleMapSDK.UI.WPF.Components.Carousel
         public async Task GetImages(string placeId)
         {
             var result = await CarousePresenter.GetImages(placeId);
-            Images = result;
-            CurrentImage = Images[0];
+            Images = result ?? new List<string>();
+            CurrentImage = Images.Count > 0 ? Images[0] : string.Empty;
+            Index = 0;
+            IsPrevious = false;
+            IsNext = true;
         }
 
         public void Previous()
