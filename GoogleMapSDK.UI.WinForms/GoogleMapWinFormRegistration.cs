@@ -23,9 +23,8 @@ namespace GoogleMapSDK.UI.WinForms
         {
             services.AddSingleton<BaseAutoComplete<Place>, GoogleMapAutoCompleteTextBox>();
             services.AddSingleton<BaseAutoComplete<Video>, YoutubeAutoCompleteTextBox>();
-            services.AddSingleton<BaseCarousel, Carousel>();
-            services.AddSingleton<BaseReviews, Reviews>();
-            services.AddSingleton<BaseReview, Review>();
+            services.AddSingleton<ICarouselView, Carousel>();
+            services.AddSingleton<IReviewsView, Reviews>();
             return services;
         }
     }

@@ -14,9 +14,9 @@ namespace GoogleMapSDK.UI.WinForms.Test
 {
     public partial class Form1 : Form
     {
-        private BaseCarousel Carousel;
-        private BaseReviews Reviews;
-        public Form1(BaseAutoComplete<Place> origin, BaseAutoComplete<Video> videoTest, BaseCarousel carousel, BaseReviews reviews)
+        private ICarouselView Carousel;
+        private IReviewsView Reviews;
+        public Form1(BaseAutoComplete<Place> origin, BaseAutoComplete<Video> videoTest, ICarouselView carousel, IReviewsView reviews)
         {
             InitializeComponent();
             Carousel = carousel;
@@ -28,8 +28,8 @@ namespace GoogleMapSDK.UI.WinForms.Test
             Controls.Add(flowLayoutPanel);
             flowLayoutPanel.Controls.Add(origin);
             flowLayoutPanel.Controls.Add(videoTest);
-            flowLayoutPanel.Controls.Add(carousel);
-            flowLayoutPanel.Controls.Add(reviews);
+            flowLayoutPanel.Controls.Add((Control)carousel);
+            flowLayoutPanel.Controls.Add((Control)reviews);
             origin.OnSelectedItem += OnSelectedItem;
             videoTest.OnSelectedItem += OnSelectedItem;
         }

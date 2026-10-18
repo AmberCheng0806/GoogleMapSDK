@@ -15,10 +15,11 @@ using System.Windows.Forms;
 
 namespace GoogleMapSDK.UI.WinForms.Components.Reviews
 {
-    public partial class Reviews : BaseReviews
+    public partial class Reviews : UserControl, IReviewsView
     {
         private IReviewsPresenter ReviewsPresenter;
-        public override double Rating
+        private double rating;
+        public double Rating
         {
             get
             {
@@ -31,7 +32,8 @@ namespace GoogleMapSDK.UI.WinForms.Components.Reviews
                 RenderStars(rating);
             }
         }
-        public override List<IReviewView> ReviewsList
+        private List<IReviewView> reviewsList = new List<IReviewView>();
+        public List<IReviewView> ReviewsList
         {
             get
             {
@@ -75,7 +77,7 @@ namespace GoogleMapSDK.UI.WinForms.Components.Reviews
             }
         }
 
-        public async override Task GetReviews(string placeId)
+        public async Task GetReviews(string placeId)
         {
             var reviews = await ReviewsPresenter.GetReviews(placeId);
             ReviewsList = AutoMapper.AutoMapper.Map<ReviewModel, Review>(reviews.Reviews).Select(x => (IReviewView)x).ToList();

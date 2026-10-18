@@ -50,7 +50,6 @@
             button1.TabIndex = 1;
             button1.Text = "<";
             button1.UseVisualStyleBackColor = true;
-            button1.Click += PreviousBtn_Click;
             // 
             // button2
             // 
@@ -60,7 +59,6 @@
             button2.TabIndex = 2;
             button2.Text = ">";
             button2.UseVisualStyleBackColor = true;
-            button2.Click += NextBtn_Click;
             // 
             // Carousel
             // 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GoogleMapSDK.Contract.Contracts.Components;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -10,9 +11,10 @@ using System.Windows.Forms;
 
 namespace GoogleMapSDK.UI.WinForms.Components.Reviews
 {
-    public partial class Review : BaseReview
+    public partial class Review : UserControl, IReviewView
     {
-        public override string AuthorName
+        private string authorName;
+        public string AuthorName
         {
             get
             {
@@ -24,7 +26,8 @@ namespace GoogleMapSDK.UI.WinForms.Components.Reviews
                 AuthorNameLab.Text = authorName;
             }
         }
-        public override string AuthorImg
+        private string authorImg;
+        public string AuthorImg
         {
             get
             {
@@ -39,7 +42,8 @@ namespace GoogleMapSDK.UI.WinForms.Components.Reviews
                 }
             }
         }
-        public override int Rating
+        private int rating;
+        public int Rating
         {
             get
             {
@@ -52,7 +56,8 @@ namespace GoogleMapSDK.UI.WinForms.Components.Reviews
                 RenderStars(rating);
             }
         }
-        public override string ReviewText
+        private string reviewText;
+        public string ReviewText
         {
             get
             {
@@ -64,7 +69,8 @@ namespace GoogleMapSDK.UI.WinForms.Components.Reviews
                 ReviewTextLab.Text = reviewText;
             }
         }
-        public override string PublishTime
+        private string publishTime;
+        public string PublishTime
         {
             get
             {
