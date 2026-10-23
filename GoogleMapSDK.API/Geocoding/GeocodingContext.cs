@@ -16,7 +16,7 @@ namespace GoogleMapSDK.API.Geocoding
     {
         private IHttpRequest httpUtility;
         public IHttpRequest HttpUtility { get => httpUtility; }
-        public GeocodingContext(IHttpRequest httpUtility) { httpUtility = httpUtility; }
+        public GeocodingContext(IHttpRequest httpUtility) { this.httpUtility = httpUtility; }
         public async Task<Geo.Geocoding> GetlatLngByAddressAsync(string address)
         {
             HttpUtility.BaseUrl = "https://geocode.googleapis.com/v4/geocode/address/";

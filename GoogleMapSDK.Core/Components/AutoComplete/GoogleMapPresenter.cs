@@ -1,5 +1,6 @@
 ﻿using GoogleMapSDK.Contract.Contracts.API;
 using GoogleMapSDK.Contract.Models.AutoComplete;
+using GoogleMapSDK.Contract.Models.Route;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +28,8 @@ namespace GoogleMapSDK.Core.Components.AutoComplete
                 return new Place
                 {
                     Name = searchText.places[0].displayName.text,
-                    Value = searchText.places[0].id
+                    Value = searchText.places[0].id,
+                    Location = new LatLng(searchText.places[0].location.latitude, searchText.places[0].location.longitude)
                 };
             }).ToList();
             var result = await Task.WhenAll(list);

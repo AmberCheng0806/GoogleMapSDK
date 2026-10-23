@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GoogleMapSDK.Contract.Models.Route;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,5 +11,6 @@ namespace GoogleMapSDK.Contract.Models.AutoComplete
     {
         public string Name { get; set; }
         public string Value { get; set; }
+        public LatLng Location { get; set; }
     }
 }

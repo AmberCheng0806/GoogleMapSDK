@@ -21,11 +21,11 @@ namespace GoogleMapSDK.API.Place
             HttpUtility.AddHeaders("X-Goog-FieldMask", "displayName,formattedAddress,location,rating,nationalPhoneNumber,regularOpeningHours,photos,reviews");
             return await HttpUtility.GetAsync<PlaceDetail>(placeId, new Dictionary<string, string>() { { "languageCode", "zh-TW" } });
         }
-        public async Task<Places> SearchTextAsync(string text)
+        public async Task<PlaceSearchText> SearchTextAsync(string text)
         {
             HttpUtility.BaseUrl = "https://places.googleapis.com/";
-            HttpUtility.AddHeaders("X-Goog-FieldMask", "places.id,places.displayName,places.formattedAddress,places.priceLevel");
-            return await HttpUtility.PostAsync<Places>("v1/places:searchText", new
+            HttpUtility.AddHeaders("X-Goog-FieldMask", "places.id,places.displayName,places.formattedAddress,places.priceLevel,places.location");
+            return await HttpUtility.PostAsync<PlaceSearchText>("v1/places:searchText", new
             {
                 textQuery = text,
                 languageCode = "zh-TW"
