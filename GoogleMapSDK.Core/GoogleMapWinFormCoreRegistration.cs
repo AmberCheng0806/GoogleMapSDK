@@ -20,7 +20,7 @@ namespace GoogleMapSDK.Core
 {
     public static class GoogleMapWinFormCoreRegistration
     {
-        public static IServiceCollection AddGoogleMapWinFormCoreService(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddGoogleMapCoreService(this IServiceCollection services, IConfiguration configuration = null)
         {
             services.AddSingleton<IAutoCompletePresenter<Place>, GoogleMapPresenter>();
             services.AddSingleton<IAutoCompletePresenter<Video>, YoutubePresenter>();

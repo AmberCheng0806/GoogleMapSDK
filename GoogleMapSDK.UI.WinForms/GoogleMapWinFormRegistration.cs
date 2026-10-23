@@ -19,7 +19,7 @@ namespace GoogleMapSDK.UI.WinForms
 {
     public static class GoogleMapWinFormRegistration
     {
-        public static IServiceCollection AddGoogleMapWinFormService(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddGoogleMapWinFormService(this IServiceCollection services, IConfiguration configuration = null)
         {
             services.AddSingleton<BaseAutoComplete<Place>, GoogleMapAutoCompleteTextBox>();
             services.AddSingleton<BaseAutoComplete<Video>, YoutubeAutoCompleteTextBox>();
