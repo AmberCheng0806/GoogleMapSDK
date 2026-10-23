@@ -10,8 +10,8 @@ namespace GoogleMapSDK.Contract.Contracts.Components
     {
         List<string> Images { get; set; }
         int Index { get; set; }
-        void PreviousBtn_Click(object sender, EventArgs e);
-        void NextBtn_Click(object sender, EventArgs e);
+        void Previous();
+        void Next();
         Task GetImages(string placeId);
     }
 }
