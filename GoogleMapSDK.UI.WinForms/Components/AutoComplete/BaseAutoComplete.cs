@@ -14,6 +14,7 @@ namespace GoogleMapSDK.UI.WinForms.Components.AutoComplete
         public bool IsSelected { get; set; } = false;
         public abstract string DisplayMember { get; }
         public abstract string ValueMember { get; }
+        private CancellationTokenSource Cancellation;
 
         public BaseAutoComplete()
         {
@@ -35,13 +36,20 @@ namespace GoogleMapSDK.UI.WinForms.Components.AutoComplete
 
         public async void AutoCompleteTextBox_TextChanged(object sender, EventArgs e)
         {
-            if (this.IsSelected) return;
-            if (string.IsNullOrEmpty(this.Text)) return;
-            var result = await GetSearchResults(this.Text);
-            ListBox.DataSource = result;
-            ListBox.DisplayMember = DisplayMember;
-            ListBox.ValueMember = ValueMember;
-            PositionAndShowListBox();
+            try
+            {
+                if (this.IsSelected) return;
+                if (string.IsNullOrEmpty(this.Text)) return;
+                Cancellation?.Cancel();
+                Cancellation = new CancellationTokenSource();
+                await Task.Delay(600, Cancellation.Token);
+                var result = await GetSearchResults(this.Text);
+                ListBox.DataSource = result;
+                ListBox.DisplayMember = DisplayMember;
+                ListBox.ValueMember = ValueMember;
+                PositionAndShowListBox();
+            }
+            catch (Exception ex) { }
         }
 
         public abstract Task<IEnumerable<T>> GetSearchResults(string inputText);

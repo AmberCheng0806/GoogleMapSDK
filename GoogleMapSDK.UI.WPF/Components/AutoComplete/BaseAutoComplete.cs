@@ -1,4 +1,5 @@
 ﻿using GoogleMapSDK.Contract.Contracts.Components;
+using GoogleMapSDK.Contract.Models.AutoComplete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace GoogleMapSDK.UI.WPF.Components.AutoComplete
         public bool IsSelected { get; set; } = false;
         public abstract string DisplayMember { get; }
         public abstract string ValueMember { get; }
+        private CancellationTokenSource Cancellation;
 
         public event EventHandler<T> OnSelectedItem;
 
@@ -23,17 +25,26 @@ namespace GoogleMapSDK.UI.WPF.Components.AutoComplete
         }
         public async void AutoCompleteTextBox_TextChanged(object sender, EventArgs e)
         {
-            if (this.IsSelected) return;
-            if (string.IsNullOrEmpty(AutoComplete.Text))
+            try
             {
-                IsDropDownVisible = System.Windows.Visibility.Collapsed;
-                return;
+                if (this.IsSelected) return;
+                if (string.IsNullOrEmpty(AutoComplete.Text))
+                {
+                    IsDropDownVisible = System.Windows.Visibility.Collapsed;
+                    return;
+                }
+                Cancellation?.Cancel();
+                Cancellation = new CancellationTokenSource();
+                await Task.Delay(600, Cancellation.Token);
+                var result = await GetSearchResults(AutoComplete.Text);
+                ResultListBox.ItemsSource = result;
+                ResultListBox.DisplayMemberPath = DisplayMember;
+                ResultListBox.SelectedValuePath = ValueMember;
+                IsDropDownVisible = System.Windows.Visibility.Visible;
             }
-            var result = await GetSearchResults(AutoComplete.Text);
-            ResultListBox.ItemsSource = result;
-            ResultListBox.DisplayMemberPath = DisplayMember;
-            ResultListBox.SelectedValuePath = ValueMember;
-            IsDropDownVisible = System.Windows.Visibility.Visible;
+            catch (Exception ex)
+            {
+            }
         }
 
         public void ListBox_MouseClick(object sender, EventArgs e)
