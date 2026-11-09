@@ -24,7 +24,8 @@ namespace GoogleMapSDK.UI.WPF.Test
     {
         private Carousel Carousel;
         private Reviews Reviews;
-        public MainWindow(BaseAutoComplete<Place> origin, BaseAutoComplete<Video> videoTest, Carousel carousel, Reviews reviews)
+        private Components.GMap.GMap GMap;
+        public MainWindow(BaseAutoComplete<Place> origin, BaseAutoComplete<Video> videoTest, Carousel carousel, Reviews reviews, Components.GMap.GMap gMap)
         {
             InitializeComponent();
             origin.OnSelectedItem += OnSelectedItem;
@@ -33,8 +34,10 @@ namespace GoogleMapSDK.UI.WPF.Test
             AutoCompletePanel.Children.Add(videoTest);
             AutoCompletePanel.Children.Add(carousel);
             AutoCompletePanel.Children.Add(reviews);
+            AutoCompletePanel.Children.Add(gMap);
             Carousel = carousel;
             Reviews = reviews;
+            GMap = gMap;
         }
         private void OnSelectedItem(object? sender, Video e)
         {
@@ -46,6 +49,7 @@ namespace GoogleMapSDK.UI.WPF.Test
             string placeId = e.Value;
             Reviews.PlaceId = placeId;
             Carousel.PlaceId = placeId;
+            await GMap.GetGMapDatas(placeId);
         }
     }
 }

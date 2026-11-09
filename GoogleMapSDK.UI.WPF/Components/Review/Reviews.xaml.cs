@@ -6,6 +6,7 @@ using GoogleMapSDK.UI.WPF.Components.Review;
 using IoC_Container.Factory;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,8 +27,8 @@ namespace GoogleMapSDK.UI.WPF.Components.Review
     /// </summary>
     public partial class Reviews : UserControl
     {
-        private ReviewsContext context;
-        public Reviews(ReviewsContext reviewsContext)
+        private IReviewsView context;
+        public Reviews(IReviewsView reviewsContext)
         {
             InitializeComponent();
             context = reviewsContext;
@@ -41,7 +42,19 @@ namespace GoogleMapSDK.UI.WPF.Components.Review
             set
             {
                 placeId = value;
-                context.GetReviews(placeId);
+                //context.GetReviews(placeId);
+                _ = LoadAsync(value);
+            }
+        }
+        private async Task LoadAsync(string id)
+        {
+            try
+            {
+                await context.GetReviews(id);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);   // 至少讓例外看得到
             }
         }
     }

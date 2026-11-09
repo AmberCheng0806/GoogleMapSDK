@@ -10,5 +10,6 @@ namespace GoogleMapSDK.Contract.Contracts.Service
     public interface IPlaceDetailService
     {
         Task<PlaceDetail> GetPlaceDetail(string placeId);
+        Task<List<string>> GetPhotos(string placeId);
     }
 }

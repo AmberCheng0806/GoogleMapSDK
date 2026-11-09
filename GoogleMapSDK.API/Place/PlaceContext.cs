@@ -18,14 +18,25 @@ namespace GoogleMapSDK.API.Place
         public async Task<PlaceDetail> GetDetailByPlaceIdAsyn(string placeId)
         {
             HttpUtility.BaseUrl = "https://places.googleapis.com/v1/places/";
-            HttpUtility.AddHeaders("X-Goog-FieldMask", "displayName,formattedAddress,location,rating,nationalPhoneNumber,regularOpeningHours,photos,reviews");
+            HttpUtility.AddHeaders("X-Goog-FieldMask", "displayName,formattedAddress,location,rating,nationalPhoneNumber,regularOpeningHours,photos,reviews,primaryTypeDisplayName,priceRange,userRatingCount");
             return await HttpUtility.GetAsync<PlaceDetail>(placeId, new Dictionary<string, string>() { { "languageCode", "zh-TW" } });
         }
         public async Task<PlaceSearchText> SearchTextAsync(string text)
         {
             HttpUtility.BaseUrl = "https://places.googleapis.com/";
-            HttpUtility.AddHeaders("X-Goog-FieldMask", "places.id,places.displayName,places.formattedAddress,places.priceLevel,places.location");
+            HttpUtility.AddHeaders("X-Goog-FieldMask", "places.id,places.displayName,places.formattedAddress,places.priceLevel,places.location,places.types,places.rating,places.regularOpeningHours,places.nationalPhoneNumber");
             return await HttpUtility.PostAsync<PlaceSearchText>("v1/places:searchText", new
+            {
+                textQuery = text,
+                languageCode = "zh-TW"
+            }
+            );
+        }
+        public async Task<PlaceIdByText> GetPlaceIdByTextAsync(string text)
+        {
+            HttpUtility.BaseUrl = "https://places.googleapis.com/";
+            HttpUtility.AddHeaders("X-Goog-FieldMask", "places.id,places.location");
+            return await HttpUtility.PostAsync<PlaceIdByText>("v1/places:searchText", new
             {
                 textQuery = text,
                 languageCode = "zh-TW"

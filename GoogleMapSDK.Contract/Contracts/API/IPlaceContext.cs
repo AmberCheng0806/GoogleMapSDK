@@ -14,6 +14,7 @@ namespace GoogleMapSDK.Contract.Contracts.API
         IHttpRequest HttpUtility { get; }
         Task<PlaceDetail> GetDetailByPlaceIdAsyn(string placeId);
         Task<PlaceSearchText> SearchTextAsync(string text);
+        Task<PlaceIdByText> GetPlaceIdByTextAsync(string text);
         Task<Places> SearchNearByAsync(double lat, double Lng, List<string> types, string radium = "500");
         Task<PlacePhoto> GetPhotosAsyn(string placeName, string height = "400", string width = "600");
         Task<PlaceAutoComplete> AutoCompleteAsync(string text);

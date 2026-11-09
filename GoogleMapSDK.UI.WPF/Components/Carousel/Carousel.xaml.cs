@@ -1,4 +1,5 @@
-﻿using GoogleMapSDK.Contract.Contracts.Presenter;
+﻿using GoogleMapSDK.Contract.Contracts.Components;
+using GoogleMapSDK.Contract.Contracts.Presenter;
 using IoC_Container.Factory;
 using System;
 using System.Collections;
@@ -24,8 +25,8 @@ namespace GoogleMapSDK.UI.WPF.Components.Carousel
     /// </summary>
     public partial class Carousel : UserControl
     {
-        private CarouselContext context;
-        public Carousel(CarouselContext carouselContext)
+        private ICarouselView context;
+        public Carousel(ICarouselView carouselContext)
         {
             InitializeComponent();
             context = carouselContext;

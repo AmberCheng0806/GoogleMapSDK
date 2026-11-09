@@ -13,9 +13,12 @@ namespace GoogleMapSDK.Contract.Models.Place
         public Location location { get; set; }
         public float rating { get; set; }
         public Regularopeninghours regularOpeningHours { get; set; }
+        public int userRatingCount { get; set; }
         public Displayname displayName { get; set; }
+        public Primarytypedisplayname primaryTypeDisplayName { get; set; }
         public Review[] reviews { get; set; }
         public Photo[] photos { get; set; }
+        public Pricerange priceRange { get; set; }
 
         public class Location
         {
@@ -28,7 +31,7 @@ namespace GoogleMapSDK.Contract.Models.Place
             public bool openNow { get; set; }
             public Period[] periods { get; set; }
             public string[] weekdayDescriptions { get; set; }
-            public DateTime nextCloseTime { get; set; }
+            public DateTime nextOpenTime { get; set; }
         }
 
         public class Period
@@ -55,6 +58,30 @@ namespace GoogleMapSDK.Contract.Models.Place
         {
             public string text { get; set; }
             public string languageCode { get; set; }
+        }
+
+        public class Primarytypedisplayname
+        {
+            public string text { get; set; }
+            public string languageCode { get; set; }
+        }
+
+        public class Pricerange
+        {
+            public Startprice startPrice { get; set; }
+            public Endprice endPrice { get; set; }
+        }
+
+        public class Startprice
+        {
+            public string currencyCode { get; set; }
+            public string units { get; set; }
+        }
+
+        public class Endprice
+        {
+            public string currencyCode { get; set; }
+            public string units { get; set; }
         }
 
         public class Review

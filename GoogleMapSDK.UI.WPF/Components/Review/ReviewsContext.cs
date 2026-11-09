@@ -27,7 +27,6 @@ namespace GoogleMapSDK.UI.WPF.Components.Review
         public async Task GetReviews(string placeId)
         {
             var reviews = await ReviewsPresenter.GetReviews(placeId);
-            ReviewsList.Clear();
             ReviewsList = AutoMapper.AutoMapper.Map<ReviewModel, ReviewContext>(reviews.Reviews).Select(x => (IReviewView)x).ToList();
             Rating = reviews.Rating;
             RenderStars(Rating);

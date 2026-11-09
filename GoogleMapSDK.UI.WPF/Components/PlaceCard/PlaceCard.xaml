@@ -1,0 +1,160 @@
+﻿<UserControl
+    x:Class="GoogleMapSDK.UI.WPF.Components.PlaceCard.PlaceCard"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converter="clr-namespace:GoogleMapSDK.UI.WPF.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:GoogleMapSDK.UI.WPF.Components.PlaceCard"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <converter:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
+
+        <!--  次要文字  -->
+        <Style x:Key="SecondaryText" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Foreground" Value="#70757A" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <!--  時間標籤  -->
+        <Style
+            x:Key="TimeLabel"
+            BasedOn="{StaticResource SecondaryText}"
+            TargetType="TextBlock">
+            <Setter Property="Width" Value="90" />
+        </Style>
+
+        <!--  時間數值  -->
+        <Style x:Key="TimeValue" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Foreground" Value="#202124" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <!--  營業狀態標籤:預設紅色(已打烊),營業中變綠色  -->
+        <Style x:Key="StatusBadge" TargetType="Border">
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="Padding" Value="8,2" />
+            <Setter Property="Background" Value="#FCE8E6" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding OpeningStatus}" Value="營業中">
+                    <Setter Property="Background" Value="#E6F4EA" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="StatusText" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Foreground" Value="#D93025" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding OpeningStatus}" Value="營業中">
+                    <Setter Property="Foreground" Value="#188038" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <!--  外層卡片  -->
+    <Border
+        Width="320"
+        Margin="12"
+        Background="White"
+        CornerRadius="12"
+        SnapsToDevicePixels="True">
+        <Border.Effect>
+            <DropShadowEffect
+                BlurRadius="16"
+                Opacity="0.25"
+                ShadowDepth="2" />
+        </Border.Effect>
+
+        <StackPanel>
+            <!--  照片(圓角上緣)  -->
+            <Border
+                Height="160"
+                CornerRadius="12,12,0,0"
+                Visibility="{Binding Photo, Converter={StaticResource StringToVisibilityConverter}}">
+                <Border.Background>
+                    <ImageBrush ImageSource="{Binding Photo}" Stretch="UniformToFill" />
+                </Border.Background>
+            </Border>
+
+            <StackPanel Margin="16,12,16,16">
+                <!--  名稱  -->
+                <TextBlock
+                    FontSize="18"
+                    FontWeight="Bold"
+                    Foreground="#202124"
+                    Text="{Binding Name}"
+                    TextTrimming="CharacterEllipsis" />
+
+                <!--  評分 + 評論數 + 類型  -->
+                <StackPanel Margin="0,6,0,0" Orientation="Horizontal">
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        FontSize="14"
+                        FontWeight="SemiBold"
+                        Foreground="#202124"
+                        Text="{Binding Rating, StringFormat={}{0:F1}}" />
+                    <TextBlock
+                        Margin="4,0,0,0"
+                        VerticalAlignment="Center"
+                        FontSize="14"
+                        Foreground="#FBBC04"
+                        Text="★" />
+                    <TextBlock
+                        Margin="4,0,0,0"
+                        Style="{StaticResource SecondaryText}"
+                        Text="{Binding UserRatingCount, StringFormat=({0:N0})}" />
+                    <TextBlock
+                        Margin="8,0,0,0"
+                        Style="{StaticResource SecondaryText}"
+                        Text="·" />
+                    <TextBlock
+                        Margin="8,0,0,0"
+                        Style="{StaticResource SecondaryText}"
+                        Text="{Binding Type}" />
+                </StackPanel>
+
+                <!--  價格區間  -->
+                <TextBlock
+                    Margin="0,4,0,0"
+                    Style="{StaticResource SecondaryText}"
+                    Text="{Binding PriceRange}"
+                    Visibility="{Binding PriceRange, Converter={StaticResource StringToVisibilityConverter}}" />
+
+                <!--  分隔線  -->
+                <Separator Margin="0,12" Background="#E8EAED" />
+
+                <!--  營業狀態  -->
+                <Border Style="{StaticResource StatusBadge}" Visibility="{Binding OpeningStatus, Converter={StaticResource StringToVisibilityConverter}}">
+                    <TextBlock Style="{StaticResource StatusText}" Text="{Binding OpeningStatus}" />
+                </Border>
+
+                <!--  開始營業時間  -->
+                <StackPanel
+                    Margin="0,8,0,0"
+                    Orientation="Horizontal"
+                    Visibility="{Binding NextOpenTime, Converter={StaticResource StringToVisibilityConverter}}">
+                    <TextBlock Style="{StaticResource TimeLabel}" Text="開始營業時間" />
+                    <TextBlock Style="{StaticResource TimeValue}" Text="{Binding NextOpenTime}" />
+                </StackPanel>
+
+                <!--  打烊時間  -->
+                <StackPanel
+                    Margin="0,4,0,0"
+                    Orientation="Horizontal"
+                    Visibility="{Binding NextCloseTime, Converter={StaticResource StringToVisibilityConverter}}">
+                    <TextBlock Style="{StaticResource TimeLabel}" Text="打烊時間" />
+                    <TextBlock Style="{StaticResource TimeValue}" Text="{Binding NextCloseTime}" />
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</UserControl>
