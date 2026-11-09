@@ -14,30 +14,49 @@ namespace GoogleMapSDK.Core.Components.Util
     {
         private IGoogleMapAPIContext GoogleMapAPIContext;
         private Dictionary<string, PlaceDetail> Cache = new Dictionary<string, PlaceDetail>();
-        private Dictionary<string, List<string>> photos = new Dictionary<string, List<string>>();
+        private Dictionary<string, List<string>> Photos = new Dictionary<string, List<string>>();
+        private SemaphoreSlim DetailSemaphore = new SemaphoreSlim(1, 1);
+        private SemaphoreSlim PhotoSemaphore = new SemaphoreSlim(1, 1);
         public PlaceDetailService(IGoogleMapAPIContext googleMapAPIContext)
         {
             GoogleMapAPIContext = googleMapAPIContext;
         }
         public async Task<PlaceDetail> GetPlaceDetail(string placeId)
         {
-            if (Cache.ContainsKey(placeId)) return Cache[placeId];
-            var detail = await GoogleMapAPIContext.PlaceContext.GetDetailByPlaceIdAsyn(placeId);
-            Cache.Add(placeId, detail);
-            return detail;
+            await DetailSemaphore.WaitAsync();
+            try
+            {
+                if (Cache.ContainsKey(placeId)) return Cache[placeId];
+                var detail = await GoogleMapAPIContext.PlaceContext.GetDetailByPlaceIdAsyn(placeId);
+                Cache.Add(placeId, detail);
+                return detail;
+            }
+            finally
+            {
+                DetailSemaphore.Release();
+            }
         }
         public async Task<List<string>> GetPhotos(string placeId)
         {
-            if (photos.ContainsKey(placeId)) return photos[placeId];
-            var detail = await GetPlaceDetail(placeId);
-            List<string> names = detail.photos?.Select(p => p.name).ToList() ?? new List<string>();
-            var uris = names.Select(async x =>
+            await PhotoSemaphore.WaitAsync();
+            try
             {
-                var photo = await GoogleMapAPIContext.PlaceContext.GetPhotosAsyn(x);
-                return photo.photoUri;
-            }).ToList();
-            var result = await Task.WhenAll(uris);
-            return result.ToList();
+                if (Photos.ContainsKey(placeId)) return Photos[placeId];
+                var detail = await GetPlaceDetail(placeId);
+                List<string> names = detail.photos?.Select(p => p.name).ToList() ?? new List<string>();
+                var uris = names.Select(async x =>
+                {
+                    var photo = await GoogleMapAPIContext.PlaceContext.GetPhotosAsyn(x);
+                    return photo.photoUri;
+                }).ToList();
+                var result = await Task.WhenAll(uris);
+                Photos.Add(placeId, result.ToList());
+                return result.ToList();
+            }
+            finally
+            {
+                PhotoSemaphore.Release();
+            }
         }
     }
 }
