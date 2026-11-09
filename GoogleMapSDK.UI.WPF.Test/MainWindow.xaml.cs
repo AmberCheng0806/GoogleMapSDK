@@ -33,8 +33,9 @@ namespace GoogleMapSDK.UI.WPF.Test
             AutoCompletePanel.Children.Add(origin);
             AutoCompletePanel.Children.Add(videoTest);
             AutoCompletePanel.Children.Add(carousel);
-            AutoCompletePanel.Children.Add(reviews);
+            gMap.Height = 400;
             AutoCompletePanel.Children.Add(gMap);
+            AutoCompletePanel.Children.Add(reviews);
             Carousel = carousel;
             Reviews = reviews;
             GMap = gMap;
