@@ -19,7 +19,7 @@ namespace GoogleMapSDK.UI.WPF
     {
         public static IServiceCollection AddGoogleMapWPFService(this IServiceCollection services, IConfiguration configuration = null)
         {
-            services.AddSingleton<BaseAutoComplete<Place>, GoogleMapAutoCompleteTextBox>();
+            services.AddTransient<BaseAutoComplete<Place>, GoogleMapAutoCompleteTextBox>();
             services.AddSingleton<BaseAutoComplete<Video>, YoutubeAutoCompleteTextBox>();
             services.AddSingleton<Carousel, Carousel>();
             services.AddSingleton<Reviews, Reviews>();

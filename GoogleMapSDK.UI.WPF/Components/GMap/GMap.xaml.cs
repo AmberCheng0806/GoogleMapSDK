@@ -16,6 +16,7 @@ using GMap.NET;
 using GMap.NET.MapProviders;
 using GMap.NET.WindowsPresentation;
 using GoogleMapSDK.Contract.Contracts.Components;
+using GoogleMapSDK.Contract.Models.Route;
 
 namespace GoogleMapSDK.UI.WPF.Components.GMap
 {
@@ -27,6 +28,8 @@ namespace GoogleMapSDK.UI.WPF.Components.GMap
         private GMapControl gMapControl = new GMapControl();
         private PlaceCard.PlaceCard PlaceCard;
         private IGMapView GMapContext;
+        public Dictionary<string, List<LatLng>> keyValuePairs = new Dictionary<string, List<LatLng>>();
+        public List<LatLng> RouteLatLngs = new List<LatLng>();
         public GMap(PlaceCard.PlaceCard placeCard, IGMapView gMapContext)
         {
             InitializeComponent();
@@ -44,7 +47,7 @@ namespace GoogleMapSDK.UI.WPF.Components.GMap
             this.gMapControl.MaxZoom = 25;
             this.gMapControl.MinZoom = 2;
             this.gMapControl.Zoom = 16;
-            gMapControl.MouseLeftButtonDown += mapControl_MouseLeftButtonDown;
+            //gMapControl.MouseLeftButtonDown += mapControl_MouseLeftButtonDown;
         }
 
         void mapControl_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -68,14 +71,21 @@ namespace GoogleMapSDK.UI.WPF.Components.GMap
 
                 // 水滴型圖片：底部尖端對準座標
                 Offset = new Point(-10, -34)
-            }; ;
+            };
             gMapControl.Markers.Add(marker);
         }
         public async Task GetGMapDatas(string placeId)
         {
             var location = await GMapContext.GetGMapDatas(placeId);
-            PointLatLng point = new PointLatLng(location.Lat, location.Lng);
             await PlaceCard.LoadAsync(placeId);
+
+            AddMarker(location);
+            RouteLatLngs.Add(location);
+        }
+
+        private void CreateMarker(LatLng latLng)
+        {
+            PointLatLng point = new PointLatLng(latLng.Lat, latLng.Lng);
             var toolTip = new ToolTip
             {
                 Content = PlaceCard,
@@ -94,11 +104,77 @@ namespace GoogleMapSDK.UI.WPF.Components.GMap
             GMapMarker marker = new GMapMarker(point)
             {
                 Shape = image,
+
                 // 水滴型圖片：底部尖端對準座標
                 Offset = new Point(-10, -34)
-            }; ;
+            };
             gMapControl.Markers.Add(marker);
             gMapControl.Position = point;
+        }
+
+        private void DeleteMarker(LatLng latLng)
+        {
+            GMapMarker gMapMarker = gMapControl.Markers.FirstOrDefault(x => x.Position.Lat == latLng.Lat && x.Position.Lng == latLng.Lng);
+            gMapControl.Markers.Remove(gMapMarker);
+        }
+
+        public void AddMarker(LatLng latLng, string name = "default")
+        {
+            if (keyValuePairs.ContainsKey(name)) { keyValuePairs[name].Add(latLng); }
+            else
+            { keyValuePairs.Add(name, new List<LatLng>() { latLng }); }
+
+            CreateMarker(latLng);
+        }
+
+        public void RemoveMarker(LatLng latLng, string name = "default")
+        {
+            if (keyValuePairs.ContainsKey(name)) keyValuePairs[name].Remove(latLng);
+
+            DeleteMarker(latLng);
+        }
+
+        public void AddMarkers(List<LatLng> latLngs, string name = "default")
+        {
+            if (keyValuePairs.ContainsKey(name)) { keyValuePairs[name].AddRange(latLngs); }
+            else
+            { keyValuePairs.Add(name, latLngs); }
+            foreach (var item in keyValuePairs[name])
+            {
+                CreateMarker(item);
+            }
+        }
+
+        public void RemoveMarkers(List<LatLng> latLngs, string name = "default")
+        {
+            if (keyValuePairs.ContainsKey(name)) keyValuePairs.Remove(name);
+            foreach (var item in latLngs)
+            {
+                DeleteMarker(item);
+            }
+        }
+
+        public void AddRoutes(List<LatLng> latLngs, string name = "default")
+        {
+            AddMarkers(latLngs, name);
+            CreateRoutes(latLngs);
+        }
+
+        private void CreateRoutes(List<LatLng> latLngs)
+        {
+            GMapMarker marker = gMapControl.Markers.FirstOrDefault(x => x.GetType() == typeof(GMapRoute));
+            gMapControl.Markers.Remove(marker);
+
+            IEnumerable<PointLatLng> points = latLngs.Select(x => new PointLatLng(x.Lat, x.Lng));
+            GMapRoute route = new GMapRoute(points);
+            route.Shape = new Line() { StrokeThickness = 4, Stroke = System.Windows.Media.Brushes.BlueViolet };
+            gMapControl.Markers.Add(route);
+        }
+
+        public void RemoveRoutes(LatLng latLng, string name = "default")
+        {
+            if (keyValuePairs.ContainsKey(name)) keyValuePairs[name].Remove(latLng);
+            CreateRoutes(keyValuePairs[name]);
         }
     }
 }
