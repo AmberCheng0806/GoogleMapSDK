@@ -8,6 +8,7 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
+
     <Grid Margin="10">
 
         <Grid.RowDefinitions>
@@ -16,25 +17,64 @@
         </Grid.RowDefinitions>
 
         <!--  總評分  -->
-        <StackPanel
+        <Border
             Grid.Row="0"
-            Margin="0,0,0,10"
-            Orientation="Horizontal">
-            <TextBlock Text="{Binding Rating, StringFormat={}{0:F1}}" />
-            <TextBlock Margin="10,0,0,0" Text="{Binding Stars}" />
+            Margin="0,0,0,12"
+            Padding="20,14"
+            Background="#F8F9FB"
+            BorderBrush="#EAECF0"
+            BorderThickness="1"
+            CornerRadius="10">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock
+                    VerticalAlignment="Center"
+                    FontSize="36"
+                    FontWeight="Bold"
+                    Foreground="#1D2939"
+                    Text="{Binding Rating, StringFormat={}{0:F1}}" />
 
-        </StackPanel>
+                <StackPanel Margin="16,0,0,0" VerticalAlignment="Center">
+                    <TextBlock
+                        FontSize="20"
+                        Foreground="#FBBC04"
+                        Text="{Binding Stars}" />
+                    <TextBlock
+                        Margin="0,2,0,0"
+                        FontSize="12"
+                        Foreground="#667085"
+                        Text="{Binding RatingCount, StringFormat={}{0} 則評論}" />
+                </StackPanel>
+            </StackPanel>
+        </Border>
 
         <!--  評論列表  -->
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-            <ItemsControl ItemsSource="{Binding ReviewsList}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <local:Review />
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
+        <ItemsControl Grid.Row="1" ItemsSource="{Binding ReviewsList}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <local:Review />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <!--  沒有評論時的提示  -->
+        <TextBlock
+            Grid.Row="1"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            FontSize="14"
+            Foreground="#98A2B3"
+            Text="尚無評論">
+            <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ReviewsList.Count}" Value="0">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
 
     </Grid>
 </UserControl>

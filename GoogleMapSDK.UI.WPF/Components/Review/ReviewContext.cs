@@ -17,10 +17,19 @@ namespace GoogleMapSDK.UI.WPF.Components.Review
         public int Rating { get; set; }
         public string ReviewText { get; set; }
         public string PublishTime { get; set; }
-        public string Stars { get; set; }
+
+        private string stars;
+        [DependsOn(nameof(Rating))]
+        public string Stars
+        {
+            get
+            {
+                RenderStars(Rating);
+                return stars;
+            }
+        }
         public ReviewContext()
         {
-
         }
         public ReviewContext(string authorName, string authorImg, int rating, string reviewText, string time)
         {
@@ -29,19 +38,18 @@ namespace GoogleMapSDK.UI.WPF.Components.Review
             Rating = rating;
             ReviewText = reviewText;
             PublishTime = time;
-            RenderStars(rating);
         }
         private void RenderStars(int number)
         {
-            Stars = "";
+            stars = "";
             for (int i = 0; i < number; i++)
             {
-                Stars += "★";
+                stars += "★";
             }
             int rest = 5 - number;
             for (int i = 0; i < rest; i++)
             {
-                Stars += "☆";
+                stars += "☆";
             }
         }
 

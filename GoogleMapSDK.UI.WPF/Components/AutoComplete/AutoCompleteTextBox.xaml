@@ -9,25 +9,159 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
+
+    <UserControl.Resources>
+
+        <!--  主要色彩，要換主題只改這裡  -->
+        <SolidColorBrush x:Key="InputBackground" Color="White" />
+        <SolidColorBrush x:Key="InputBorder" Color="#D0D5DD" />
+        <SolidColorBrush x:Key="InputBorderHover" Color="#98A2B3" />
+        <SolidColorBrush x:Key="InputBorderFocus" Color="#4285F4" />
+        <SolidColorBrush x:Key="InputText" Color="#1D2939" />
+        <SolidColorBrush x:Key="InputHint" Color="#98A2B3" />
+        <SolidColorBrush x:Key="ItemHover" Color="#F2F4F7" />
+        <SolidColorBrush x:Key="ItemSelected" Color="#E8F0FE" />
+
+        <!--  搜尋框  -->
+        <Style x:Key="SearchTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Height" Value="40" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Foreground" Value="{StaticResource InputText}" />
+            <Setter Property="CaretBrush" Value="{StaticResource InputBorderFocus}" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Tag" Value="搜尋地點" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border
+                            x:Name="Bd"
+                            Background="{StaticResource InputBackground}"
+                            BorderBrush="{StaticResource InputBorder}"
+                            BorderThickness="1"
+                            CornerRadius="8">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <!--  搜尋圖示  -->
+                                <Path
+                                    x:Name="SearchIcon"
+                                    Width="16"
+                                    Height="16"
+                                    Margin="12,0,0,0"
+                                    VerticalAlignment="Center"
+                                    Data="M15.5,14h-.79l-.28-.27A6.47,6.47 0 0 0 16,9.5 6.5,6.5 0 1 0 9.5,16c1.61,0 3.09-.59 4.23-1.57l.27.28v.79l5,4.99L20.49,19l-4.99-5z M9.5,14C7.01,14 5,11.99 5,9.5S7.01,5 9.5,5 14,7.01 14,9.5 11.99,14 9.5,14z"
+                                    Fill="{StaticResource InputHint}"
+                                    Stretch="Uniform" />
+
+                                <ScrollViewer
+                                    x:Name="PART_ContentHost"
+                                    Grid.Column="1"
+                                    Margin="8,0,12,0"
+                                    VerticalAlignment="Center" />
+
+                                <!--  提示文字  -->
+                                <TextBlock
+                                    x:Name="Hint"
+                                    Grid.Column="1"
+                                    Margin="12,0,12,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="{TemplateBinding FontSize}"
+                                    Foreground="{StaticResource InputHint}"
+                                    IsHitTestVisible="False"
+                                    Text="{TemplateBinding Tag}"
+                                    Visibility="Collapsed" />
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Text" Value="">
+                                <Setter TargetName="Hint" Property="Visibility" Value="Visible" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource InputBorderHover}" />
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource InputBorderFocus}" />
+                                <Setter TargetName="Bd" Property="BorderThickness" Value="2" />
+                                <Setter TargetName="SearchIcon" Property="Fill" Value="{StaticResource InputBorderFocus}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!--  下拉項目  -->
+        <Style x:Key="ResultItemStyle" TargetType="ListBoxItem">
+            <Setter Property="Padding" Value="12,9" />
+            <Setter Property="Margin" Value="0,1" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Foreground" Value="{StaticResource InputText}" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border
+                            x:Name="ItemBd"
+                            Padding="{TemplateBinding Padding}"
+                            Background="Transparent"
+                            CornerRadius="6">
+                            <ContentPresenter VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ItemBd" Property="Background" Value="{StaticResource ItemHover}" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="ItemBd" Property="Background" Value="{StaticResource ItemSelected}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </UserControl.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBox Name="AutoComplete" Grid.Row="0" />
+        <TextBox
+            Name="AutoComplete"
+            Grid.Row="0"
+            Style="{StaticResource SearchTextBoxStyle}" />
 
+        <!--  下拉清單（Margin 左右留空間讓陰影不被裁切）  -->
         <Border
             Grid.Row="0"
-            MaxHeight="200"
-            Margin="0,28,0,0"
+            MaxHeight="220"
+            Margin="2,46,2,8"
             VerticalAlignment="Top"
             Panel.ZIndex="999"
-            Background="#2D2D30"
-            BorderBrush="#3F3F46"
+            Background="White"
+            BorderBrush="#EAECF0"
             BorderThickness="1"
-            CornerRadius="4"
+            CornerRadius="8"
             Visibility="{Binding IsDropDownVisible, ElementName=Root}">
-            <ListBox x:Name="ResultListBox" />
+            <Border.Effect>
+                <DropShadowEffect
+                    BlurRadius="16"
+                    Direction="270"
+                    Opacity="0.18"
+                    ShadowDepth="4" />
+            </Border.Effect>
+
+            <ListBox
+                x:Name="ResultListBox"
+                Padding="4"
+                Background="Transparent"
+                BorderThickness="0"
+                ItemContainerStyle="{StaticResource ResultItemStyle}"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
         </Border>
     </Grid>
 </UserControl>

@@ -8,41 +8,145 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <Grid Width="500" Height="300">
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+    <UserControl.Resources>
 
-        <Image
-            x:Name="CarouselImage"
-            Grid.Row="0"
-            Source="{Binding CurrentImage}"
-            Stretch="Uniform" />
+        <!--  圓形半透明導覽按鈕  -->
+        <Style x:Key="NavButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="40" />
+            <Setter Property="Height" Value="40" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Focusable" Value="False" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Ellipse
+                                x:Name="Bg"
+                                Fill="#99000000"
+                                Stroke="#33FFFFFF"
+                                StrokeThickness="1" />
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bg" Property="Fill" Value="#CC000000" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Bg" Property="Fill" Value="#FF000000" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-        <StackPanel
-            Grid.Row="1"
-            HorizontalAlignment="Center"
-            Orientation="Horizontal">
+    </UserControl.Resources>
 
+    <!--  外層留白，讓陰影不被裁切  -->
+    <Grid
+        Width="520"
+        Height="320"
+        Margin="10">
+
+        <!--  卡片本體  -->
+        <Border
+            x:Name="CardBorder"
+            Background="White"
+            BorderBrush="#E0E0E0"
+            BorderThickness="1"
+            CornerRadius="12">
+            <Border.Effect>
+                <DropShadowEffect
+                    BlurRadius="20"
+                    Direction="270"
+                    Opacity="0.35"
+                    ShadowDepth="4" />
+            </Border.Effect>
+        </Border>
+
+        <!--  內容區（圖片圓角裁切）  -->
+        <Grid>
+            <Grid.OpacityMask>
+                <VisualBrush>
+                    <VisualBrush.Visual>
+                        <Border
+                            Width="{Binding ActualWidth, ElementName=CardBorder}"
+                            Height="{Binding ActualHeight, ElementName=CardBorder}"
+                            Background="Black"
+                            CornerRadius="12" />
+                    </VisualBrush.Visual>
+                </VisualBrush>
+            </Grid.OpacityMask>
+
+            <!--  無圖片時的佔位文字  -->
+            <TextBlock
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="14"
+                Foreground="#80000000"
+                Text="尚無圖片" />
+
+            <Image
+                x:Name="CarouselImage"
+                RenderOptions.BitmapScalingMode="HighQuality"
+                Source="{Binding CurrentImage}"
+                Stretch="UniformToFill" />
+
+            <!--  底部漸層，讓按鈕更清楚  -->
+            <Border
+                Height="70"
+                VerticalAlignment="Bottom"
+                IsHitTestVisible="False">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Offset="0" Color="#00000000" />
+                        <GradientStop Offset="1" Color="#66000000" />
+                    </LinearGradientBrush>
+                </Border.Background>
+            </Border>
+
+            <!--  上一張  -->
             <Button
                 x:Name="PreviousButton"
-                Width="80"
-                Margin="5"
+                Margin="12,0,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
                 Command="{Binding PreviousCommand}"
-                Content="上一張"
-                IsEnabled="{Binding IsPrevious}" />
+                IsEnabled="{Binding IsPrevious}"
+                Style="{StaticResource NavButtonStyle}"
+                ToolTip="上一張">
+                <Path
+                    Data="M 8,0 L 0,8 L 8,16"
+                    Stroke="White"
+                    StrokeEndLineCap="Round"
+                    StrokeLineJoin="Round"
+                    StrokeStartLineCap="Round"
+                    StrokeThickness="2.5" />
+            </Button>
 
+            <!--  下一張  -->
             <Button
                 x:Name="NextButton"
-                Width="80"
-                Margin="5"
+                Margin="0,0,12,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
                 Command="{Binding NextCommand}"
-                Content="下一張"
-                IsEnabled="{Binding IsNext}" />
-
-        </StackPanel>
-
+                IsEnabled="{Binding IsNext}"
+                Style="{StaticResource NavButtonStyle}"
+                ToolTip="下一張">
+                <Path
+                    Data="M 0,0 L 8,8 L 0,16"
+                    Stroke="White"
+                    StrokeEndLineCap="Round"
+                    StrokeLineJoin="Round"
+                    StrokeStartLineCap="Round"
+                    StrokeThickness="2.5" />
+            </Button>
+        </Grid>
     </Grid>
 </UserControl>

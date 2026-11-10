@@ -8,28 +8,82 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <StackPanel Margin="10">
 
-        <StackPanel Orientation="Horizontal">
-            <Image
-                x:Name="AuthorImage"
-                Width="40"
-                Height="40"
-                Margin="0,0,10,0"
-                Source="{Binding AuthorImg}" />
-            <StackPanel>
-                <TextBlock Text="{Binding AuthorName}" />
-                <TextBlock Text="{Binding PublishTime}" />
+    <Border
+        Margin="0,0,0,10"
+        Padding="16"
+        Background="White"
+        BorderBrush="#EAECF0"
+        BorderThickness="1"
+        CornerRadius="10">
+        <StackPanel>
+
+            <!--  作者資訊  -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <!--  頭像：灰色圓形底，圖片載入前或沒有圖片時當佔位  -->
+                <Grid
+                    Width="40"
+                    Height="40"
+                    Margin="0,0,12,0">
+                    <Ellipse Fill="#E4E7EC" />
+                    <Image
+                        x:Name="AuthorImage"
+                        RenderOptions.BitmapScalingMode="HighQuality"
+                        Source="{Binding AuthorImg}"
+                        Stretch="UniformToFill">
+                        <Image.Clip>
+                            <EllipseGeometry
+                                Center="20,20"
+                                RadiusX="20"
+                                RadiusY="20" />
+                        </Image.Clip>
+                    </Image>
+                </Grid>
+
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <TextBlock
+                        FontSize="14"
+                        FontWeight="SemiBold"
+                        Foreground="#1D2939"
+                        Text="{Binding AuthorName}"
+                        TextTrimming="CharacterEllipsis" />
+                    <TextBlock
+                        Margin="0,2,0,0"
+                        FontSize="12"
+                        Foreground="#98A2B3"
+                        Text="{Binding PublishTime}" />
+                </StackPanel>
+            </Grid>
+
+            <!--  評分  -->
+            <StackPanel Margin="0,12,0,0" Orientation="Horizontal">
+                <TextBlock
+                    VerticalAlignment="Center"
+                    FontSize="16"
+                    Foreground="#FBBC04"
+                    Text="{Binding Stars}" />
+                <TextBlock
+                    Margin="8,0,0,0"
+                    VerticalAlignment="Center"
+                    FontSize="12"
+                    Foreground="#667085"
+                    Text="{Binding Rating}" />
             </StackPanel>
-        </StackPanel>
 
-        <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
-            <TextBlock Text="{Binding Stars}" />
-            <TextBlock Margin="5,0,0,0" Text="{Binding Rating}" />
+            <!--  評論內容  -->
+            <TextBlock
+                Margin="0,8,0,0"
+                FontSize="14"
+                Foreground="#344054"
+                LineHeight="21"
+                Text="{Binding ReviewText}"
+                TextWrapping="Wrap" />
+
         </StackPanel>
-        <TextBlock
-            Margin="0,5,0,0"
-            Text="{Binding ReviewText}"
-            TextWrapping="Wrap" />
-    </StackPanel>
+    </Border>
 </UserControl>

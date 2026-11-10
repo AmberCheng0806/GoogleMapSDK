@@ -30,12 +30,21 @@ namespace GoogleMapSDK.UI.WPF.Test
             InitializeComponent();
             origin.OnSelectedItem += OnSelectedItem;
             videoTest.OnSelectedItem += OnSelectedItem;
+
+            // 搜尋框：兩個之間留點間距。
+            // 後面的下拉清單會蓋住前面的，所以讓排在前面的 ZIndex 較高
+            origin.Margin = new Thickness(0, 0, 0, 8);
+            Panel.SetZIndex(origin, 2);
+            Panel.SetZIndex(videoTest, 1);
             AutoCompletePanel.Children.Add(origin);
             AutoCompletePanel.Children.Add(videoTest);
-            AutoCompletePanel.Children.Add(carousel);
-            gMap.Height = 400;
-            AutoCompletePanel.Children.Add(gMap);
-            AutoCompletePanel.Children.Add(reviews);
+
+            // 輪播、地圖、評論放到各自的區塊
+            CarouselHost.Child = carousel;
+            gMap.Height = double.NaN;   // 高度交給外層 Border 控制
+            GMapHost.Child = gMap;
+            ReviewsHost.Child = reviews;
+
             Carousel = carousel;
             Reviews = reviews;
             GMap = gMap;
