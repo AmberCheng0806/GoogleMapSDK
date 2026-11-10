@@ -18,6 +18,7 @@ namespace GoogleMapSDK.UI.WPF.Components.Review
 
         public double Rating { get; set; }
         public List<IReviewView> ReviewsList { get; set; } = new List<IReviewView>();
+        public int RatingCount { get; set; }
         public string Stars { get; set; }
         public ReviewsContext(IReviewsPresenter reviewsPresenter)
         {
@@ -29,6 +30,7 @@ namespace GoogleMapSDK.UI.WPF.Components.Review
             var reviews = await ReviewsPresenter.GetReviews(placeId);
             ReviewsList = AutoMapper.AutoMapper.Map<ReviewModel, ReviewContext>(reviews.Reviews).Select(x => (IReviewView)x).ToList();
             Rating = reviews.Rating;
+            RatingCount = reviews.RatingCount;
             RenderStars(Rating);
         }
         private void RenderStars(double number)

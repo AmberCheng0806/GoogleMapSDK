@@ -10,11 +10,13 @@ namespace GoogleMapSDK.Contract.Models.Review
     {
         public double Rating { get; set; }
         public List<ReviewModel> Reviews { get; set; } = new List<ReviewModel>();
+        public int RatingCount { get; set; }
 
-        public ReviewsModel(double rating, List<ReviewModel> reviews)
+        public ReviewsModel(double rating, List<ReviewModel> reviews, int ratingCount)
         {
             Rating = rating;
             Reviews = reviews;
+            RatingCount = ratingCount;
         }
     }
 }

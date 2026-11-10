@@ -22,7 +22,7 @@ namespace GoogleMapSDK.Core.Components.Reviews
         {
             var detail = await PlaceDetailService.GetPlaceDetail(placeId);
             List<ReviewModel> reviews = detail.reviews?.Select(x => new ReviewModel(x.authorAttribution.displayName, x.authorAttribution.photoUri, x.rating, x.text?.text ?? "", x.relativePublishTimeDescription)).ToList() ?? new List<ReviewModel>();
-            return new ReviewsModel(detail.rating, reviews);
+            return new ReviewsModel(detail.rating, reviews, detail.userRatingCount);
         }
 
     }
